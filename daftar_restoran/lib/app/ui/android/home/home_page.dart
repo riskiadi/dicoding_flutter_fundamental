@@ -52,9 +52,9 @@ class HomePage extends GetView<HomeController> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(
-                          _controller.localRestaurant.restaurants?.length ?? 0,
+                          _controller.restaurantListModel.restaurants?.length ?? 0,
                           (index) {
-                            var restaurant = _controller.localRestaurant.restaurants?[index];
+                            var restaurant = _controller.restaurantListModel.restaurants?[index];
                             return Container(
                               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5,),
                               decoration: BoxDecoration(
@@ -78,7 +78,7 @@ class HomePage extends GetView<HomeController> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         CachedNetworkImage(
-                                            imageUrl: restaurant?.pictureId ?? "",
+                                            imageUrl: "$URL_RESTAURANT_BANNER${restaurant?.pictureId}",
                                             width: double.infinity,
                                             height: 160.h,
                                             fit: BoxFit.cover,
@@ -91,11 +91,63 @@ class HomePage extends GetView<HomeController> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                restaurant?.name ?? "",
-                                                style: TextStyle(
-                                                    fontSize: 18.sp,
-                                                    fontWeight: FontWeight.bold),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    restaurant?.name ?? "",
+                                                    style: TextStyle(
+                                                        fontSize: 18.sp,
+                                                        fontWeight: FontWeight.bold),
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Container(
+                                                        padding: const EdgeInsets.symmetric(
+                                                          horizontal: 5,
+                                                          vertical: 5,
+                                                        ),
+                                                        child: Baseline(
+                                                          baseline: 15,
+                                                          baselineType:
+                                                          TextBaseline.alphabetic,
+                                                          child: Text(restaurant?.rating?.toStringAsFixed(1) ?? "",
+                                                            style: TextStyle(
+                                                              fontSize: 13.sp,
+                                                              color: hexStarColor,
+                                                              height: 1.1,
+                                                            ),
+                                                            softWrap: true,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      RatingBar(
+                                                        initialRating: restaurant?.rating?.toDouble() ?? 0,
+                                                        minRating: 0,
+                                                        maxRating: 5,
+                                                        itemSize: 17.sp,
+                                                        itemCount: 5,
+                                                        ignoreGestures: true,
+                                                        allowHalfRating: true,
+                                                        ratingWidget: RatingWidget(
+                                                          half: Icon(
+                                                            FluentIcons.star_half_12_regular,
+                                                            color: hexStarColor,
+                                                          ),
+                                                          full: Icon(
+                                                            FluentIcons.star_12_filled,
+                                                            color: hexStarColor,
+                                                          ),
+                                                          empty: Icon(FluentIcons.star_12_regular,
+                                                            color: hexStarColor,
+                                                          ),
+                                                        ),
+                                                        onRatingUpdate: (_) {},
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                               const SizedBox(height: 3),
                                               Row(
@@ -109,92 +161,6 @@ class HomePage extends GetView<HomeController> {
                                                 ],
                                               ),
                                               const SizedBox(height: 10),
-                                              Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Icon(
-                                                              FluentIcons.food_20_regular,
-                                                              size: 19.sp,
-                                                          ),
-                                                          const SizedBox(width: 3),
-                                                          Text(
-                                                              restaurant?.menus?.foods?.length.toString() ?? "",
-                                                              style: TextStyle(fontSize: 17.sp,),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(width: 15),
-                                                      Row(
-                                                        children: [
-                                                          Icon(
-                                                              FluentIcons.drink_wine_20_regular,
-                                                              size: 19.sp,
-                                                          ),
-                                                          const SizedBox(width: 3),
-                                                          Text(
-                                                              restaurant?.menus?.drinks?.length.toString() ?? "",
-                                                              style: TextStyle(
-                                                                  fontSize: 17.sp,
-                                                              ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      Container(
-                                                        padding: const EdgeInsets.symmetric(
-                                                                horizontal: 5,
-                                                                vertical: 5,
-                                                        ),
-                                                        child: Baseline(
-                                                            baseline: 15,
-                                                            baselineType:
-                                                                TextBaseline.alphabetic,
-                                                            child: Text(restaurant?.rating?.toStringAsFixed(1) ?? "",
-                                                              style: TextStyle(
-                                                                fontSize: 13.sp,
-                                                                color: hexStarColor,
-                                                                height: 1.1,
-                                                              ),
-                                                              softWrap: true,
-                                                            ),
-                                                        ),
-                                                      ),
-                                                      RatingBar(
-                                                        initialRating: restaurant?.rating?.toDouble() ?? 0,
-                                                        minRating: 0,
-                                                        maxRating: 5,
-                                                        itemSize: 17.sp,
-                                                        itemCount: 5,
-                                                        ignoreGestures: true,
-                                                        allowHalfRating: true,
-                                                        ratingWidget: RatingWidget(
-                                                          half: Icon(
-                                                              FluentIcons.star_half_12_regular,
-                                                              color: hexStarColor,
-                                                          ),
-                                                          full: Icon(
-                                                              FluentIcons.star_12_filled,
-                                                              color: hexStarColor,
-                                                          ),
-                                                          empty: Icon(FluentIcons.star_12_regular,
-                                                              color: hexStarColor,
-                                                          ),
-                                                        ),
-                                                        onRatingUpdate: (_) {},
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
                                             ],
                                           ),
                                         ),

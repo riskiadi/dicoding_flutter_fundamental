@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daftar_restoran/app/controller/home/home_controller.dart';
+import 'package:daftar_restoran/app/utils/const.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +14,7 @@ class DetailPage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
 
-    var restaurant = _controller.localRestaurant.restaurants?[_controller.selectedRestaurantIndex];
+    var restaurant = _controller.detailRestaurantModel?.restaurant;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -24,7 +25,7 @@ class DetailPage extends GetView<HomeController> {
             Stack(
               children: [
                 CachedNetworkImage(
-                  imageUrl: restaurant?.pictureId ?? "",
+                  imageUrl: "$URL_RESTAURANT_BANNER${restaurant?.pictureId}",
                   width: double.infinity,
                   height: 250.h,
                   fit: BoxFit.cover,

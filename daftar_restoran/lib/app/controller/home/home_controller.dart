@@ -1,22 +1,28 @@
-import 'dart:convert';
-
-import 'package:daftar_restoran/app/data/model/database.dart';
+import 'package:daftar_restoran/app/data/model/detail_restaurant_model.dart';
+import 'package:daftar_restoran/app/data/model/restaurant_list_model.dart';
+import 'package:daftar_restoran/app/data/repository/api_repository.dart';
 import 'package:daftar_restoran/app/routes/app_routes.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
 
-  final _localRestaurant = LocalRestaurant().obs;
+  final _restaurantListModel = RestaurantListModel().obs;
+  final _detailRestaurantModel = DetailRestaurantModel().obs;
   final _selectedRestaurantIndex = 0.obs;
 
-  LocalRestaurant get localRestaurant => _localRestaurant.value;
+  RestaurantListModel get restaurantListModel => _restaurantListModel.value;
 
-  set localRestaurant(value) {
-    _localRestaurant.value = value;
+  set restaurantListModel(value) {
+    _restaurantListModel.value = value;
   }
 
   int get selectedRestaurantIndex => _selectedRestaurantIndex.value;
+
+  DetailRestaurantModel? get detailRestaurantModel => _detailRestaurantModel.value;
+
+  set detailRestaurantModel(value) {
+    _detailRestaurantModel.value = value;
+  }
 
   set selectedRestaurantIndex(value) {
     _selectedRestaurantIndex.value = value;
@@ -24,19 +30,18 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    _loadDataRestaurant();
+    _initializationValue();
     super.onInit();
   }
 
-  _loadDataRestaurant() async{
-    if (Get.context != null){
-      var json  =  await DefaultAssetBundle.of(Get.context!).loadString("assets/json/local_restaurant.json");
-      localRestaurant = LocalRestaurant.fromJson(jsonDecode(json));
-    }
+  _initializationValue() async{
+    restaurantListModel = await apiRepository.getRestaurantList();
   }
 
-  goToDetail(int index){
+  goToDetail(int index) async{
     selectedRestaurantIndex = index;
+    print(restaurantListModel.restaurants![index].id);
+    detailRestaurantModel = await apiRepository.detailRestaurant(restaurantListModel.restaurants![index].id??"0");
     Get.toNamed(Routes.DETAIL);
   }
 
