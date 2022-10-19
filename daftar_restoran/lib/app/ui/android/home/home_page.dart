@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daftar_restoran/app/controller/home/home_controller.dart';
+import 'package:daftar_restoran/app/routes/app_routes.dart';
 import 'package:daftar_restoran/app/utils/const.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -23,20 +24,39 @@ class HomePage extends GetView<HomeController> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Discover",
-                    style: TextStyle(
-                        fontSize: 25.sp, fontWeight: FontWeight.bold,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Discover",
+                        style: TextStyle(
+                            fontSize: 25.sp, fontWeight: FontWeight.bold,),
+                      ),
+                      Text(
+                        "Recomendation viral restaurant",
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "Recomendation viral restaurant",
-                    style: TextStyle(
-                      fontSize: 13.sp,
+                  Transform.scale(
+                    scale: 0.8,
+                    child: IconButton(
+                      onPressed: () {
+                        Get.toNamed(
+                          Routes.SEARCH,
+                        );
+                      },
+                      icon: Icon(
+                        Icons.search,
+                        size: 30.sp,
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
