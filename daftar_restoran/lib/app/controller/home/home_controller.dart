@@ -9,11 +9,18 @@ class HomeController extends GetxController {
   final _restaurantListModel = RestaurantListModel().obs;
   final _detailRestaurantModel = DetailRestaurantModel().obs;
   final _selectedRestaurantIndex = 0.obs;
+  final _errorMessage = RxnString();
 
   RestaurantListModel get restaurantListModel => _restaurantListModel.value;
 
   set restaurantListModel(value) {
     _restaurantListModel.value = value;
+  }
+
+  get errorMessage => _errorMessage.value;
+
+  set errorMessage(value) {
+    _errorMessage.value = value;
   }
 
   int get selectedRestaurantIndex => _selectedRestaurantIndex.value;
@@ -35,13 +42,23 @@ class HomeController extends GetxController {
   }
 
   _initializationValue() async{
-    restaurantListModel = await apiRepository.getRestaurantList();
+    var either = await apiRepository.getRestaurantList();
+    either.fold(
+      (left) => errorMessage = left,
+      (right) => restaurantListModel = right,
+    );
   }
 
-  goToDetail(int index) async{
+  goToDetailByIndex(int index) async{
     selectedRestaurantIndex = index;
-    print(restaurantListModel.restaurants![index].id);
-    detailRestaurantModel = await apiRepository.detailRestaurant(restaurantListModel.restaurants![index].id??"0");
+    var result = await apiRepository.detailRestaurant(restaurantListModel.restaurants![index].id??"0");
+    result.fold((left) => print(left), (right) => detailRestaurantModel = right);
+    Get.toNamed(Routes.DETAIL);
+  }
+
+  goToDetailBySearch(String id) async{
+    var result = await apiRepository.detailRestaurant(id);
+    result.fold((left) => print(left), (right) => detailRestaurantModel = right);
     Get.toNamed(Routes.DETAIL);
   }
 

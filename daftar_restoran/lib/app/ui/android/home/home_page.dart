@@ -69,7 +69,7 @@ class HomePage extends GetView<HomeController> {
                   child: Obx(
                     () => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15,),
-                      child: Column(
+                      child: _controller.errorMessage!=null ? Center(child: Text(_controller.errorMessage, style: TextStyle(fontWeight: FontWeight.w600),)) : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(
                           _controller.restaurantListModel.restaurants?.length ?? 0,
@@ -90,7 +90,7 @@ class HomePage extends GetView<HomeController> {
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(19),
                                 child: InkWell(
-                                  onTap: () => _controller.goToDetail(index),
+                                  onTap: () => _controller.goToDetailByIndex(index),
                                   borderRadius: BorderRadius.circular(19),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(19),
