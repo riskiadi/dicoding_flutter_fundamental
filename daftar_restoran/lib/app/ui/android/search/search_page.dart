@@ -64,14 +64,7 @@ class SearchPage extends GetView<SearchController> {
                     ),
                   ),
                 ),
-                controller.loadStatus.isLoading
-                    ? Container(
-                        margin: EdgeInsets.symmetric(vertical: 50.h),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      )
-                    : controller.errorMessage != null
+                controller.errorMessage != null
                         ? Padding(
                           padding: EdgeInsets.symmetric(vertical: 20.h),
                           child: Center(child: Text(controller.errorMessage)),

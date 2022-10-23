@@ -114,11 +114,17 @@ class HomePage extends GetView<HomeController> {
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    restaurant?.name ?? "",
-                                                    style: TextStyle(
-                                                        fontSize: 18.sp,
-                                                        fontWeight: FontWeight.bold),
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Text(
+                                                      "${restaurant?.name}",
+                                                      style: TextStyle(
+                                                          fontSize: 17.sp,
+                                                          fontWeight: FontWeight.bold,
+                                                      ),
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                   Row(
                                                     crossAxisAlignment: CrossAxisAlignment.center,

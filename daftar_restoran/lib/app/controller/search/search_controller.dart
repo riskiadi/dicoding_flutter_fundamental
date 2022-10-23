@@ -1,12 +1,12 @@
 import 'package:daftar_restoran/app/data/model/search_restaurant_model.dart';
 import 'package:daftar_restoran/app/data/repository/api_repository.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class SearchController extends GetxController{
 
   final _searchTextField = TextEditingController();
-  final _loadStatus = RxStatus.empty().obs;
   final _searchModel = SearchRestaurantModel().obs;
   final _errorMessage = RxnString();
 
@@ -14,12 +14,6 @@ class SearchController extends GetxController{
 
   set searchTextField(value) {
     _searchTextField.value = value;
-  }
-
-  RxStatus get loadStatus => _loadStatus.value;
-
-  set loadStatus(value) {
-    _loadStatus.value = value;
   }
 
   SearchRestaurantModel get searchModel => _searchModel.value;
@@ -35,9 +29,9 @@ class SearchController extends GetxController{
   }
 
   void searchQuery() async {
-    loadStatus = RxStatus.loading();
+    EasyLoading.show(status: "Loading");
     final result = await apiRepository.searchRestaurant(searchTextField.text);
-    loadStatus = RxStatus.success();
+    EasyLoading.dismiss();
     result.fold(
       (left) => errorMessage = left,
       (right){

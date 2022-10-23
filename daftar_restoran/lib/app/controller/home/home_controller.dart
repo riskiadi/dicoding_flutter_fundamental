@@ -2,6 +2,7 @@ import 'package:daftar_restoran/app/data/model/detail_restaurant_model.dart';
 import 'package:daftar_restoran/app/data/model/restaurant_list_model.dart';
 import 'package:daftar_restoran/app/data/repository/api_repository.dart';
 import 'package:daftar_restoran/app/routes/app_routes.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -10,6 +11,7 @@ class HomeController extends GetxController {
   final _detailRestaurantModel = DetailRestaurantModel().obs;
   final _selectedRestaurantIndex = 0.obs;
   final _errorMessage = RxnString();
+  final _loadingStatus = RxStatus.empty().obs;
 
   RestaurantListModel get restaurantListModel => _restaurantListModel.value;
 
@@ -35,6 +37,12 @@ class HomeController extends GetxController {
     _selectedRestaurantIndex.value = value;
   }
 
+  RxStatus get loadingStatus => _loadingStatus.value;
+
+  set loadingStatus(value) {
+    _loadingStatus.value = value;
+  }
+
   @override
   void onInit() {
     _initializationValue();
@@ -42,7 +50,10 @@ class HomeController extends GetxController {
   }
 
   _initializationValue() async{
+    EasyLoading.show(status: "Loading");
     var either = await apiRepository.getRestaurantList();
+    EasyLoading.dismiss();
+    loadingStatus = RxStatus.success();
     either.fold(
       (left) => errorMessage = left,
       (right) => restaurantListModel = right,

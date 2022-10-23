@@ -26,7 +26,7 @@ class ApiRepository{
       if (kDebugMode) {
         print(e);
       }
-      return const Left("Tidak ada koneksi internet.");
+      return const Left(TEXT_NO_CONNECTION);
     }
   }
 
@@ -39,11 +39,11 @@ class ApiRepository{
       }else{
         return Left("Data tidak dapat diambil, [${response.statusCode}].");
       }
-    }catch(e){
+    }on SocketException catch(e){
       if (kDebugMode) {
         print(e);
       }
-      return const Left("Tidak ada koneksi internet.");
+      return const Left(TEXT_NO_CONNECTION);
     }
   }
 
@@ -56,11 +56,11 @@ class ApiRepository{
       }else{
         return Left("Data tidak dapat diambil, [${response.statusCode}].");
       }
-    }catch(e){
+    }on SocketException catch(e){
       if (kDebugMode) {
         print(e);
       }
-      return const Left("Tidak ada koneksi internet.");
+      return const Left(TEXT_NO_CONNECTION);
     }
   }
 
