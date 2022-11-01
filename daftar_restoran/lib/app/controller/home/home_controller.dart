@@ -2,6 +2,7 @@ import 'package:daftar_restoran/app/data/model/detail_restaurant_model.dart';
 import 'package:daftar_restoran/app/data/model/restaurant_list_model.dart';
 import 'package:daftar_restoran/app/data/repository/api_repository.dart';
 import 'package:daftar_restoran/app/routes/app_routes.dart';
+import 'package:daftar_restoran/services/favorite_service.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +13,7 @@ class HomeController extends GetxController {
   final _selectedRestaurantIndex = 0.obs;
   final _errorMessage = RxnString();
   final _loadingStatus = RxStatus.empty().obs;
+  final _isFavorite = false.obs;
 
   RestaurantListModel get restaurantListModel => _restaurantListModel.value;
 
@@ -43,6 +45,12 @@ class HomeController extends GetxController {
     _loadingStatus.value = value;
   }
 
+  bool get isFavorite => _isFavorite.value;
+
+  set isFavorite(value) {
+    _isFavorite.value = value;
+  }
+
   @override
   void onInit() {
     _initializationValue();
@@ -71,6 +79,10 @@ class HomeController extends GetxController {
     var result = await apiRepository.detailRestaurant(id);
     result.fold((left) => print(left), (right) => detailRestaurantModel = right);
     Get.toNamed(Routes.DETAIL);
+  }
+
+  Future<void> checkIsFavorite(String id) async{
+    isFavorite = await favoriteService.isFavorite(id);
   }
 
 }

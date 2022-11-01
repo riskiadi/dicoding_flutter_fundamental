@@ -1,12 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daftar_restoran/app/controller/home/home_controller.dart';
-import 'package:daftar_restoran/app/data/hive/hive_database.dart';
 import 'package:daftar_restoran/app/utils/const.dart';
+import 'package:daftar_restoran/services/favorite_service.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:like_button/like_button.dart';
 
 class DetailPage extends GetView<HomeController> {
   DetailPage({Key? key}) : super(key: key);
@@ -17,6 +16,7 @@ class DetailPage extends GetView<HomeController> {
   Widget build(BuildContext context) {
 
     var restaurant = _controller.detailRestaurantModel?.restaurant;
+    _controller.checkIsFavorite(restaurant?.id??"0");
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -103,17 +103,22 @@ class DetailPage extends GetView<HomeController> {
                             SizedBox(width: 20),
                             Container(
                               margin: EdgeInsets.symmetric(horizontal: 10),
-                                child: LikeButton(
-                                  size: 30.sp,
-                                  likeBuilder: (isLiked) {
-                                    if(isLiked){
-                                      if(restaurant!=null) hiveDatabase.addFavorite(restaurant);
-                                      return Icon(FluentIcons.heart_28_filled, color: Colors.pink, size: 30.sp,);
-                                    }else{
-                                      if(restaurant!=null) hiveDatabase.deleteFavorite(restaurant);
-                                      return Icon(FluentIcons.heart_28_regular, color: Colors.white, size: 30.sp,);
-                                    }
+                                child: IconButton(
+                                  icon: _controller.isFavorite ? Icon(FluentIcons.heart_28_filled, color: Colors.pink, size: 30.sp,) : Icon(FluentIcons.heart_28_regular, color: Colors.pink, size: 30.sp,),
+
+                                  onPressed: () {
+                                    if(restaurant!=null) favoriteService.addToFavorite(restaurant);
                                   },
+                                  // likeBuilder: (isLiked) {
+                                  //   if(restaurant!=null) hiveDatabase.addFavorite(restaurant);
+                                  //   if(isLiked){
+                                  //     if(restaurant!=null) hiveDatabase.addFavorite(restaurant);
+                                  //     return Icon(FluentIcons.heart_28_filled, color: Colors.pink, size: 30.sp,);
+                                  //   }else{
+                                  //     if(restaurant!=null) hiveDatabase.deleteFavorite(restaurant);
+                                  //     return
+                                  //   }
+                                  // },
                                 ),
                             ),
                           ],

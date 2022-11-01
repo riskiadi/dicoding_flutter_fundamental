@@ -1,4 +1,5 @@
-import 'package:hive/hive.dart';
+
+import 'package:objectbox/objectbox.dart';
 
 class DetailRestaurantModel {
   DetailRestaurantModel({
@@ -33,28 +34,20 @@ DetailRestaurantModel copyWith({  bool? error,
 
 }
 
-@HiveType(typeId: 0)
-class Restaurant extends HiveObject {
+@Entity()
+class Restaurant {
 
-  @HiveField(0)
+  @Id()
   String? id;
-  @HiveField(1)
+
   String? name;
-  @HiveField(2)
   String? description;
-  @HiveField(3)
   String? city;
-  @HiveField(4)
   String? address;
-  @HiveField(5)
   String? pictureId;
-  @HiveField(6)
   List<Categories>? categories;
-  @HiveField(7)
   Menus? menus;
-  @HiveField(8)
   num? rating;
-  @HiveField(9)
   List<CustomerReviews>? customerReviews;
 
   Restaurant({
