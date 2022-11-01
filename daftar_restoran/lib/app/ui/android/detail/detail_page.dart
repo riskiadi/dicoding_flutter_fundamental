@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daftar_restoran/app/controller/home/home_controller.dart';
+import 'package:daftar_restoran/app/data/hive/hive_database.dart';
 import 'package:daftar_restoran/app/utils/const.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:like_button/like_button.dart';
 
 class DetailPage extends GetView<HomeController> {
   DetailPage({Key? key}) : super(key: key);
@@ -76,22 +78,45 @@ class DetailPage extends GetView<HomeController> {
                   bottom: 20,
                   left: 0,
                   child: Container(
+                    width: 1.sw,
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          restaurant?.name ?? "",
-                          style: TextStyle(
-                            fontSize: 27.sp,
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(
-                                  color: Colors.black.withOpacity(0.6),
-                                  blurRadius: 15,
-                              )
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                restaurant?.name ?? "",
+                                style: TextStyle(
+                                  fontSize: 27.sp,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black.withOpacity(0.6),
+                                      blurRadius: 15,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 20),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                                child: LikeButton(
+                                  size: 30.sp,
+                                  likeBuilder: (isLiked) {
+                                    if(isLiked){
+                                      if(restaurant!=null) hiveDatabase.addFavorite(restaurant);
+                                      return Icon(FluentIcons.heart_28_filled, color: Colors.pink, size: 30.sp,);
+                                    }else{
+                                      if(restaurant!=null) hiveDatabase.deleteFavorite(restaurant);
+                                      return Icon(FluentIcons.heart_28_regular, color: Colors.white, size: 30.sp,);
+                                    }
+                                  },
+                                ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 4),
                         Row(

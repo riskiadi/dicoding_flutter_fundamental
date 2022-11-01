@@ -1,3 +1,5 @@
+import 'package:hive/hive.dart';
+
 class DetailRestaurantModel {
   DetailRestaurantModel({
       this.error, 
@@ -31,18 +33,42 @@ DetailRestaurantModel copyWith({  bool? error,
 
 }
 
-class Restaurant {
+@HiveType(typeId: 0)
+class Restaurant extends HiveObject {
+
+  @HiveField(0)
+  String? id;
+  @HiveField(1)
+  String? name;
+  @HiveField(2)
+  String? description;
+  @HiveField(3)
+  String? city;
+  @HiveField(4)
+  String? address;
+  @HiveField(5)
+  String? pictureId;
+  @HiveField(6)
+  List<Categories>? categories;
+  @HiveField(7)
+  Menus? menus;
+  @HiveField(8)
+  num? rating;
+  @HiveField(9)
+  List<CustomerReviews>? customerReviews;
+
   Restaurant({
-      this.id, 
-      this.name, 
-      this.description, 
-      this.city, 
-      this.address, 
-      this.pictureId, 
-      this.categories, 
-      this.menus, 
-      this.rating, 
-      this.customerReviews,});
+    this.id,
+    this.name,
+    this.description,
+    this.city,
+    this.address,
+    this.pictureId,
+    this.categories,
+    this.menus,
+    this.rating,
+    this.customerReviews,
+  });
 
   Restaurant.fromJson(dynamic json) {
     id = json['id'];
@@ -66,37 +92,31 @@ class Restaurant {
       });
     }
   }
-  String? id;
-  String? name;
-  String? description;
-  String? city;
-  String? address;
-  String? pictureId;
-  List<Categories>? categories;
-  Menus? menus;
-  num? rating;
-  List<CustomerReviews>? customerReviews;
-Restaurant copyWith({  String? id,
-  String? name,
-  String? description,
-  String? city,
-  String? address,
-  String? pictureId,
-  List<Categories>? categories,
-  Menus? menus,
-  num? rating,
-  List<CustomerReviews>? customerReviews,
-}) => Restaurant(  id: id ?? this.id,
-  name: name ?? this.name,
-  description: description ?? this.description,
-  city: city ?? this.city,
-  address: address ?? this.address,
-  pictureId: pictureId ?? this.pictureId,
-  categories: categories ?? this.categories,
-  menus: menus ?? this.menus,
-  rating: rating ?? this.rating,
-  customerReviews: customerReviews ?? this.customerReviews,
-);
+
+  Restaurant copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? city,
+    String? address,
+    String? pictureId,
+    List<Categories>? categories,
+    Menus? menus,
+    num? rating,
+    List<CustomerReviews>? customerReviews,
+  }) => Restaurant(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        description: description ?? this.description,
+        city: city ?? this.city,
+        address: address ?? this.address,
+        pictureId: pictureId ?? this.pictureId,
+        categories: categories ?? this.categories,
+        menus: menus ?? this.menus,
+        rating: rating ?? this.rating,
+        customerReviews: customerReviews ?? this.customerReviews,
+      );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
