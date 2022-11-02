@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daftar_restoran/app/controller/home/home_controller.dart';
 import 'package:daftar_restoran/app/utils/const.dart';
-import 'package:daftar_restoran/services/favorite_service.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,9 +13,8 @@ class DetailPage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-
     var restaurant = _controller.detailRestaurantModel?.restaurant;
-    _controller.checkIsFavorite(restaurant?.id??"0");
+    _controller.checkIsFavorite(restaurant?.id ?? "0");
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -35,15 +33,15 @@ class DetailPage extends GetView<HomeController> {
                 Container(
                   margin: const EdgeInsets.only(left: 20, top: 40),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.14),
-                            blurRadius: 5,
-                            spreadRadius: 0.5,
-                        )
-                      ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.14),
+                        blurRadius: 5,
+                        spreadRadius: 0.5,
+                      )
+                    ],
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 5,
@@ -103,23 +101,19 @@ class DetailPage extends GetView<HomeController> {
                             SizedBox(width: 20),
                             Container(
                               margin: EdgeInsets.symmetric(horizontal: 10),
-                                child: IconButton(
-                                  icon: _controller.isFavorite ? Icon(FluentIcons.heart_28_filled, color: Colors.pink, size: 30.sp,) : Icon(FluentIcons.heart_28_regular, color: Colors.pink, size: 30.sp,),
-
-                                  onPressed: () {
-                                    if(restaurant!=null) favoriteService.addToFavorite(restaurant);
-                                  },
-                                  // likeBuilder: (isLiked) {
-                                  //   if(restaurant!=null) hiveDatabase.addFavorite(restaurant);
-                                  //   if(isLiked){
-                                  //     if(restaurant!=null) hiveDatabase.addFavorite(restaurant);
-                                  //     return Icon(FluentIcons.heart_28_filled, color: Colors.pink, size: 30.sp,);
-                                  //   }else{
-                                  //     if(restaurant!=null) hiveDatabase.deleteFavorite(restaurant);
-                                  //     return
-                                  //   }
-                                  // },
-                                ),
+                              child: Obx(() => IconButton(
+                                icon: _controller.isFavorite ?
+                                Icon(FluentIcons.heart_28_filled, color: Colors.pink, size: 30.sp,) :
+                                Icon(FluentIcons.heart_28_regular, color: Colors.pink, size: 30.sp,),
+                                onPressed: () {
+                                  if (_controller.isFavorite){
+                                    if (restaurant != null) _controller.deleteFavorite(restaurant);
+                                  }else{
+                                    if (restaurant != null) _controller.addFavorite(restaurant);
+                                  }
+                                },
+                              ),
+                              ),
                             ),
                           ],
                         ),
@@ -167,95 +161,102 @@ class DetailPage extends GetView<HomeController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    color: Colors.white,
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "About",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold,
-                                ),
+                  color: Colors.white,
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "About",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
                               ),
-                              const SizedBox(height: 5),
-                              Text(
-                                restaurant?.description ?? "",
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(fontSize: 13.sp),
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              restaurant?.description ?? "",
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(fontSize: 13.sp),
+                            ),
+                          ],
                         ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Food Menu",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold,
-                                ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Food Menu",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
                               ),
-                              const SizedBox(height: 5),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                  restaurant?.menus?.foods?.length ?? 0,
-                                  (index) => Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 1),
-                                    child: Text(
-                                      restaurant?.menus?.foods?[index].name ?? "",
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(fontSize: 13.sp),
+                            ),
+                            const SizedBox(height: 5),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                restaurant?.menus?.foods?.length ?? 0,
+                                    (index) =>
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 1),
+                                      child: Text(
+                                        restaurant?.menus?.foods?[index].name ??
+                                            "",
+                                        textAlign: TextAlign.justify,
+                                        style: TextStyle(fontSize: 13.sp),
+                                      ),
                                     ),
-                                  ),
-                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Drink Menu",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 5),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                  restaurant?.menus?.drinks?.length ?? 0,
-                                  (index) => Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 1),
-                                    child: Text(
-                                      restaurant?.menus?.drinks?[index].name ?? "",
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(fontSize: 13.sp),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Drink Menu",
+                              style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 5),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                restaurant?.menus?.drinks?.length ?? 0,
+                                    (index) =>
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 1),
+                                      child: Text(
+                                        restaurant?.menus?.drinks?[index]
+                                            .name ?? "",
+                                        textAlign: TextAlign.justify,
+                                        style: TextStyle(fontSize: 13.sp),
+                                      ),
                                     ),
-                                  ),
-                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

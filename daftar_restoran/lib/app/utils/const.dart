@@ -7,5 +7,5 @@ const URL_RESTAURANT_SEARCH = '/search';
 const URL_RESTAURANT_BANNER = 'https://restaurant-api.dicoding.dev/images/medium/';
 const TEXT_NO_CONNECTION = "Tidak ada koneksi internet.";
 const SQL_DB_NAME = "restaurant.db";
-const SQL_TABLE_NAME = "favorite_restaurant";
+const SQL_TABLE_NAME = "favorite_restaurant_table";
 final hexStarColor = HexColor("#F8B704");

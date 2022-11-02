@@ -1,12 +1,15 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:daftar_restoran/app/data/model/detail_restaurant_model.dart';
 import 'package:daftar_restoran/app/data/model/restaurant_list_model.dart';
 import 'package:daftar_restoran/app/data/repository/api_repository.dart';
 import 'package:daftar_restoran/app/routes/app_routes.dart';
-import 'package:daftar_restoran/services/favorite_service.dart';
+import 'package:daftar_restoran/app/services/favorite_service.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+
+  final favoriteService = FavoriteService();
 
   final _restaurantListModel = RestaurantListModel().obs;
   final _detailRestaurantModel = DetailRestaurantModel().obs;
@@ -82,7 +85,20 @@ class HomeController extends GetxController {
   }
 
   Future<void> checkIsFavorite(String id) async{
-    isFavorite = await favoriteService.isFavorite(id);
+    isFavorite = await favoriteService.checkIsFavorite(id);
   }
+
+  addFavorite(Restaurant? restaurant) async{
+    if(restaurant!=null) await favoriteService.addToFavorite(restaurant);
+    isFavorite = await favoriteService.checkIsFavorite(restaurant?.id??"0");
+    BotToast.showSimpleNotification(title: "Favorite", subTitle: "Berhasil menambahkan ke favorite.", duration: Duration(seconds: 4));
+  }
+
+  deleteFavorite(Restaurant? restaurant) async{
+    if(restaurant!=null) await favoriteService.deleteFavoriteRestaurant(restaurant);
+    isFavorite = await favoriteService.checkIsFavorite(restaurant?.id??"0");
+
+  }
+
 
 }

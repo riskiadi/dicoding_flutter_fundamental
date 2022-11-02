@@ -3,10 +3,7 @@ import 'package:daftar_restoran/app/utils/const.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-final favoriteService = FavoriteService();
-
 class FavoriteService{
-
   static late Database _database;
   static FavoriteService? _databaseHelper;
 
@@ -19,22 +16,24 @@ class FavoriteService{
   Future<Database> _initializeDb() async{
     var path = await getDatabasesPath();
     var db = openDatabase(
-        join(path, SQL_DB_NAME),
-        onCreate: (db, version) async {
-          await db.execute(
-              '''
+      join(path, SQL_DB_NAME),
+      onCreate: (db, version) async {
+        await db.execute(
+          '''
             CREATE TABLE $SQL_TABLE_NAME (
               id TEXT PRIMARY KEY,
               name TEXT,
-              description TEXT,
-              pictureId TEXT,
-              city TEXt,
-              rating DOUBLE
+              name TEXT
+              description TEXT
+              city TEXT
+              address TEXT
+              pictureId TEXT
+              rating TEXT
             )
           '''
-          );
-        },
-        version: 1
+        );
+      },
+      version: 1
     );
 
     return db;
@@ -47,7 +46,7 @@ class FavoriteService{
 
   Future<void> addToFavorite(Restaurant restaurant) async{
     final Database db = await database;
-    await db.insert(SQL_TABLE_NAME, restaurant.toJson());
+    await db.insert(SQL_TABLE_NAME, restaurant.toJsonFav());
   }
 
   Future<List<Restaurant>> getRestaurants() async{
@@ -56,7 +55,25 @@ class FavoriteService{
     return results.map((restaurant) => Restaurant.fromJson(restaurant)).toList();
   }
 
-  Future<Restaurant> getRestaurantById(String id) async{
+  Future<void> deleteFavoriteRestaurant(Restaurant restaurant) async{
+    final db = await database;
+    await db.delete(
+        SQL_TABLE_NAME,
+      where: 'id = ?',
+      whereArgs: [restaurant.id]
+    );
+  }
+
+  Future<bool> checkIsFavorite(String id) async{
+    try{
+      await _getRestaurantById(id);
+      return true;
+    }catch(error){
+      return false;
+    }
+  }
+
+  Future<Restaurant> _getRestaurantById(String id) async{
     final Database db = await database;
     List<Map<String, dynamic>> results = await db.query(
         SQL_TABLE_NAME,
@@ -68,24 +85,6 @@ class FavoriteService{
       throw "NotFound";
     }else{
       return results.map((res) => Restaurant.fromJson(res)).first;
-    }
-  }
-
-  Future<void> deleteFavorite(String id) async{
-    final db = await database;
-    await db.delete(
-        SQL_TABLE_NAME,
-        where: 'id = ?',
-        whereArgs: [id]
-    );
-  }
-
-  Future<bool> isFavorite(String id) async{
-    try{
-      await getRestaurantById(id);
-      return true;
-    }catch(error){
-      return false;
     }
   }
 

@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bot_toast:
+    dependency: "direct main"
+    description:
+      name: bot_toast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.3"
   build:
     dependency: transitive
     description:
@@ -225,13 +232,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  flat_buffers:
-    dependency: transitive
-    description:
-      name: flat_buffers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.5"
   fluentui_system_icons:
     dependency: "direct main"
     description:
@@ -464,27 +464,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.3.2"
-  objectbox:
-    dependency: "direct main"
-    description:
-      name: objectbox
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.2"
-  objectbox_flutter_libs:
-    dependency: "direct main"
-    description:
-      name: objectbox_flutter_libs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.2"
-  objectbox_generator:
-    dependency: "direct dev"
-    description:
-      name: objectbox_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.2"
   octo_image:
     dependency: transitive
     description:

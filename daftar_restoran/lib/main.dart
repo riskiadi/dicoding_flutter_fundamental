@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:daftar_restoran/app/routes/app_pages.dart';
 import 'package:daftar_restoran/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => GetMaterialApp(
-        builder: EasyLoading.init(),
+        builder: EasyLoading.init(
+          builder: BotToastInit()
+        ),
         title: 'Restaurant Discovery',
         defaultTransition: Transition.fade,
         debugShowCheckedModeBanner: false,
@@ -28,6 +31,7 @@ class MyApp extends StatelessWidget {
         getPages: AppPages.pages,
         navigatorObservers: [
           HeroController(),
+          BotToastNavigatorObserver(),
         ],
         theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
       ),

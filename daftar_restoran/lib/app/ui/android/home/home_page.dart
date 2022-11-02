@@ -43,20 +43,38 @@ class HomePage extends GetView<HomeController> {
                       ),
                     ],
                   ),
-                  Transform.scale(
-                    scale: 0.8,
-                    child: IconButton(
-                      onPressed: () {
-                        Get.toNamed(
-                          Routes.SEARCH,
-                        );
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        size: 30.sp,
+                  Row(
+                    children: [
+                      Transform.scale(
+                        scale: 0.8,
+                        child: IconButton(
+                          onPressed: () {
+                            Get.toNamed(
+                              Routes.FAVORITE,
+                            );
+                          },
+                          icon: Icon(
+                            Icons.favorite_border,
+                            size: 30.sp,
+                          ),
+                        ),
                       ),
-                    ),
-                  )
+                      Transform.scale(
+                        scale: 0.8,
+                        child: IconButton(
+                          onPressed: () {
+                            Get.toNamed(
+                              Routes.SEARCH,
+                            );
+                          },
+                          icon: Icon(
+                            Icons.search,
+                            size: 30.sp,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

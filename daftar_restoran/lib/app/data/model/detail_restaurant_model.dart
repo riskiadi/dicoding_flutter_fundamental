@@ -1,6 +1,3 @@
-
-import 'package:objectbox/objectbox.dart';
-
 class DetailRestaurantModel {
   DetailRestaurantModel({
       this.error, 
@@ -34,12 +31,9 @@ DetailRestaurantModel copyWith({  bool? error,
 
 }
 
-@Entity()
 class Restaurant {
 
-  @Id()
   String? id;
-
   String? name;
   String? description;
   String? city;
@@ -110,6 +104,7 @@ class Restaurant {
         customerReviews: customerReviews ?? this.customerReviews,
       );
 
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
@@ -128,6 +123,18 @@ class Restaurant {
     if (customerReviews != null) {
       map['customerReviews'] = customerReviews?.map((v) => v.toJson()).toList();
     }
+    return map;
+  }
+
+  Map<String, dynamic> toJsonFav() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['name'] = name;
+    map['description'] = description;
+    map['city'] = city;
+    map['address'] = address;
+    map['pictureId'] = pictureId;
+    map['rating'] = rating;
     return map;
   }
 

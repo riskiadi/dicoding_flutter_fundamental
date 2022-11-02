@@ -24,11 +24,9 @@ dependencies:
   flutter_easyloading: ^3.0.5
   flutter_local_notifications: ^9.5.0
   android_alarm_manager_plus: ^2.0.5
-  objectbox: ^1.6.2
-  objectbox_flutter_libs: any
+  bot_toast: ^4.0.3
 
 dev_dependencies:
-  objectbox_generator: any
   mockito: ^5.1.0
   build_runner: ^2.1.10
   flutter_test:
