@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daftar_restoran/app/controller/home/home_controller.dart';
+import 'package:daftar_restoran/app/data/model/detail_restaurant_model.dart';
 import 'package:daftar_restoran/app/utils/const.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,11 @@ class DetailPage extends GetView<HomeController> {
   DetailPage({Key? key}) : super(key: key);
 
   final _controller = Get.find<HomeController>();
+  final args = Get.arguments;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
+    print(args["id"]);
     var restaurant = _controller.detailRestaurantModel?.restaurant;
     _controller.checkIsFavorite(restaurant?.id ?? "0");
 

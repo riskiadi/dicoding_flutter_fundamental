@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 class FavoriteController extends GetxController {
 
   final favoriteService = FavoriteService();
-
   final _searchTextField = TextEditingController();
   final _restaurantList = <Restaurant>[].obs;
   final _errorMessage = RxnString();
@@ -37,6 +36,10 @@ class FavoriteController extends GetxController {
 
   Future<void> getFavoriteList() async{
     restaurantList = await favoriteService.getRestaurants();
+  }
+
+  Future<void> searchFavorite() async{
+    restaurantList = await favoriteService.getRestaurantByName(searchTextField.text);
   }
 
 }

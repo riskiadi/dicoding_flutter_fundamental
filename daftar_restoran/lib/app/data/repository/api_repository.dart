@@ -30,6 +30,25 @@ class ApiRepository{
     }
   }
 
+  Future<Either<String, Restaurants?>> getRandomRestaurant() async{
+    try{
+      var uri = Uri.https(BASEURL, URL_RESTAURANT_LIST);
+      var response = await http.get(uri);
+      if(response.statusCode==200){
+        var listModel = RestaurantListModel.fromJson(jsonDecode(response.body));
+        listModel.restaurants?.shuffle();
+        return Right(listModel.restaurants?.first);
+      }else{
+        return Left("Data tidak dapat diambil, [${response.statusCode}].");
+      }
+    }on SocketException catch(e){
+      if (kDebugMode) {
+        print(e);
+      }
+      return const Left(TEXT_NO_CONNECTION);
+    }
+  }
+
   Future<Either<String, DetailRestaurantModel?>> detailRestaurant(String id) async{
     try{
       var uri = Uri.https(BASEURL, "$URL_RESTAURANT_DETAIL/$id");

@@ -73,6 +73,16 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ),
                       ),
+                      Transform.scale(
+                        scale: 0.8,
+                        child: IconButton(
+                          onPressed: () => Get.toNamed(Routes.SETTINGS,),
+                          icon: Icon(
+                            FluentIcons.settings_24_regular,
+                            size: 30.sp,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],

@@ -57,7 +57,7 @@ class FavoritePage extends GetView<FavoriteController> {
                         scale: 0.9,
                         child: IconButton(
                           icon: const Icon(Icons.search),
-                          onPressed: () {},
+                          onPressed: ()=>controller.searchFavorite(),
                         ),
                       ),
                     ),

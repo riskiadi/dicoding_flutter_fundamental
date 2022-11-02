@@ -72,7 +72,7 @@ class SearchPage extends GetView<SearchController> {
                         : Container(
                             margin: const EdgeInsets.symmetric(vertical: 10),
                             child: controller
-                                        .searchModel.restaurants?.isEmpty ==
+                                        .searchModel.restaurantsSearch?.isEmpty ==
                                     true
                                 ? Container(
                                     width: 1.sw,
@@ -94,11 +94,11 @@ class SearchPage extends GetView<SearchController> {
                                   )
                                 : Column(
                                     children: List.generate(
-                                        controller.searchModel.restaurants
+                                        controller.searchModel.restaurantsSearch
                                                 ?.length ??
                                             0, (index) {
                                       final restaurant = controller
-                                          .searchModel.restaurants?[index];
+                                          .searchModel.restaurantsSearch?[index];
                                       return Container(
                                           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10,),
                                           child: InkWell(

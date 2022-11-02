@@ -1,3 +1,4 @@
+import 'package:get_storage/get_storage.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 const BASEURL = 'restaurant-api.dicoding.dev';

@@ -23,12 +23,11 @@ class FavoriteService{
             CREATE TABLE $SQL_TABLE_NAME (
               id TEXT PRIMARY KEY,
               name TEXT,
-              name TEXT
-              description TEXT
-              city TEXT
-              address TEXT
-              pictureId TEXT
-              rating TEXT
+              description TEXT,
+              city TEXT,
+              address TEXT,
+              pictureId TEXT,
+              rating REAL
             )
           '''
         );
@@ -71,6 +70,16 @@ class FavoriteService{
     }catch(error){
       return false;
     }
+  }
+
+  Future<List<Restaurant>> getRestaurantByName(String name) async{
+    final Database db = await database;
+    List<Map<String, dynamic>> results = await db.query(
+        SQL_TABLE_NAME,
+        where: 'name LIKE ?',
+        whereArgs: ['%$name%']
+    );
+    return results.map((restaurant) => Restaurant.fromJson(restaurant)).toList();
   }
 
   Future<Restaurant> _getRestaurantById(String id) async{

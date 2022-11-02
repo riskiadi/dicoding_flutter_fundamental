@@ -2,42 +2,42 @@ class SearchRestaurantModel {
   SearchRestaurantModel({
       this.error, 
       this.founded, 
-      this.restaurants,});
+      this.restaurantsSearch,});
 
   SearchRestaurantModel.fromJson(dynamic json) {
     error = json['error'];
     founded = json['founded'];
     if (json['restaurants'] != null) {
-      restaurants = [];
+      restaurantsSearch = [];
       json['restaurants'].forEach((v) {
-        restaurants?.add(Restaurants.fromJson(v));
+        restaurantsSearch?.add(RestaurantsSearch.fromJson(v));
       });
     }
   }
   bool? error;
   num? founded;
-  List<Restaurants>? restaurants;
+  List<RestaurantsSearch>? restaurantsSearch;
 SearchRestaurantModel copyWith({  bool? error,
   num? founded,
-  List<Restaurants>? restaurants,
+  List<RestaurantsSearch>? restaurants,
 }) => SearchRestaurantModel(  error: error ?? this.error,
   founded: founded ?? this.founded,
-  restaurants: restaurants ?? this.restaurants,
+  restaurantsSearch: restaurants ?? this.restaurantsSearch,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['error'] = error;
     map['founded'] = founded;
-    if (restaurants != null) {
-      map['restaurants'] = restaurants?.map((v) => v.toJson()).toList();
+    if (restaurantsSearch != null) {
+      map['restaurants'] = restaurantsSearch?.map((v) => v.toJson()).toList();
     }
     return map;
   }
 
 }
 
-class Restaurants {
-  Restaurants({
+class RestaurantsSearch {
+  RestaurantsSearch({
       this.id, 
       this.name, 
       this.description, 
@@ -45,7 +45,7 @@ class Restaurants {
       this.city, 
       this.rating,});
 
-  Restaurants.fromJson(dynamic json) {
+  RestaurantsSearch.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
@@ -59,13 +59,13 @@ class Restaurants {
   String? pictureId;
   String? city;
   num? rating;
-Restaurants copyWith({  String? id,
+  RestaurantsSearch copyWith({  String? id,
   String? name,
   String? description,
   String? pictureId,
   String? city,
   num? rating,
-}) => Restaurants(  id: id ?? this.id,
+}) => RestaurantsSearch(  id: id ?? this.id,
   name: name ?? this.name,
   description: description ?? this.description,
   pictureId: pictureId ?? this.pictureId,

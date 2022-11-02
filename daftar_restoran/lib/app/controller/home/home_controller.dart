@@ -4,11 +4,14 @@ import 'package:daftar_restoran/app/data/model/restaurant_list_model.dart';
 import 'package:daftar_restoran/app/data/repository/api_repository.dart';
 import 'package:daftar_restoran/app/routes/app_routes.dart';
 import 'package:daftar_restoran/app/services/favorite_service.dart';
+import 'package:daftar_restoran/app/services/notification_service.dart';
+import 'package:daftar_restoran/main.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
 
+  final NotificationService notificationService = NotificationService();
   final favoriteService = FavoriteService();
 
   final _restaurantListModel = RestaurantListModel().obs;
@@ -61,6 +64,7 @@ class HomeController extends GetxController {
   }
 
   _initializationValue() async{
+    notificationService.configureSelectNotificationSubject(Routes.DETAIL);
     EasyLoading.show(status: "Loading");
     var either = await apiRepository.getRestaurantList();
     EasyLoading.dismiss();
@@ -95,10 +99,17 @@ class HomeController extends GetxController {
   }
 
   deleteFavorite(Restaurant? restaurant) async{
+    callbackX();
     if(restaurant!=null) await favoriteService.deleteFavoriteRestaurant(restaurant);
     isFavorite = await favoriteService.checkIsFavorite(restaurant?.id??"0");
-
   }
 
+  Future<void> callbackX() async{
+    final NotificationService notificationService = NotificationService();
+    late Restaurants? res;
+    var result = await apiRepository.getRandomRestaurant();
+    result.fold((left) => print(left), (right) => res = right);
+    await notificationService.showNotification(notificationsPlugin, res);
+  }
 
 }
