@@ -5,7 +5,6 @@ import 'package:daftar_restoran/app/data/repository/api_repository.dart';
 import 'package:daftar_restoran/app/routes/app_routes.dart';
 import 'package:daftar_restoran/app/services/favorite_service.dart';
 import 'package:daftar_restoran/app/services/notification_service.dart';
-import 'package:daftar_restoran/main.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +16,8 @@ class HomeController extends GetxController {
   final _restaurantListModel = RestaurantListModel().obs;
   final _detailRestaurantModel = DetailRestaurantModel().obs;
   final _selectedRestaurantIndex = 0.obs;
-  final _errorMessage = RxnString();
+  final _homeErrorMessage = RxnString();
+  final _detailErrorMessage = RxnString();
   final _loadingStatus = RxStatus.empty().obs;
   final _isFavorite = false.obs;
 
@@ -27,10 +27,16 @@ class HomeController extends GetxController {
     _restaurantListModel.value = value;
   }
 
-  get errorMessage => _errorMessage.value;
+  get homeErrorMessage => _homeErrorMessage.value;
 
-  set errorMessage(value) {
-    _errorMessage.value = value;
+  set homeErrorMessage(value) {
+    _homeErrorMessage.value = value;
+  }
+
+  get detailErrorMessage => _detailErrorMessage.value;
+
+  set detailErrorMessage(value) {
+    _detailErrorMessage.value = value;
   }
 
   int get selectedRestaurantIndex => _selectedRestaurantIndex.value;
@@ -70,7 +76,7 @@ class HomeController extends GetxController {
     EasyLoading.dismiss();
     loadingStatus = RxStatus.success();
     either.fold(
-      (left) => errorMessage = left,
+      (left) => homeErrorMessage = left,
       (right) => restaurantListModel = right,
     );
   }
@@ -78,13 +84,23 @@ class HomeController extends GetxController {
   goToDetailByIndex(int index) async{
     selectedRestaurantIndex = index;
     var result = await apiRepository.detailRestaurant(restaurantListModel.restaurants![index].id??"0");
-    result.fold((left) => print(left), (right) => detailRestaurantModel = right);
+    result.fold((left){
+      detailErrorMessage = left;
+    }, (right){
+      detailErrorMessage = null;
+      detailRestaurantModel = right;
+    });
     Get.toNamed(Routes.DETAIL);
   }
 
   goToDetailBySearch(String id) async{
     var result = await apiRepository.detailRestaurant(id);
-    result.fold((left) => print(left), (right) => detailRestaurantModel = right);
+    result.fold((left){
+      detailErrorMessage = left;
+    }, (right){
+      detailErrorMessage = null;
+      detailRestaurantModel = right;
+    });
     Get.toNamed(Routes.DETAIL);
   }
 
@@ -99,17 +115,8 @@ class HomeController extends GetxController {
   }
 
   deleteFavorite(Restaurant? restaurant) async{
-    callbackX();
     if(restaurant!=null) await favoriteService.deleteFavoriteRestaurant(restaurant);
     isFavorite = await favoriteService.checkIsFavorite(restaurant?.id??"0");
-  }
-
-  Future<void> callbackX() async{
-    final NotificationService notificationService = NotificationService();
-    late Restaurants? res;
-    var result = await apiRepository.getRandomRestaurant();
-    result.fold((left) => print(left), (right) => res = right);
-    await notificationService.showNotification(notificationsPlugin, res);
   }
 
 }

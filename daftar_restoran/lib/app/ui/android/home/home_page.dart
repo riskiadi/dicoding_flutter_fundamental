@@ -27,59 +27,55 @@ class HomePage extends GetView<HomeController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  Expanded(child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Discover",
                         style: TextStyle(
-                            fontSize: 25.sp, fontWeight: FontWeight.bold,),
+                          fontSize: 20.sp, fontWeight: FontWeight.bold,),
                       ),
                       Text(
                         "Recomendation viral restaurant",
                         style: TextStyle(
-                          fontSize: 13.sp,
+                          fontSize: 12.sp,
                         ),
                       ),
                     ],
-                  ),
+                  ),),
                   Row(
                     children: [
                       Transform.scale(
-                        scale: 0.8,
+                        scale: 0.7,
                         child: IconButton(
-                          onPressed: () {
-                            Get.toNamed(
-                              Routes.FAVORITE,
-                            );
-                          },
+                          onPressed: ()=>Get.toNamed(
+                            Routes.FAVORITE,
+                          ),
                           icon: Icon(
                             Icons.favorite_border,
-                            size: 30.sp,
+                            size: 25.sp,
                           ),
                         ),
                       ),
                       Transform.scale(
-                        scale: 0.8,
+                        scale: 0.7,
                         child: IconButton(
-                          onPressed: () {
-                            Get.toNamed(
-                              Routes.SEARCH,
-                            );
-                          },
+                          onPressed: ()=>Get.toNamed(
+                            Routes.SEARCH,
+                          ),
                           icon: Icon(
                             Icons.search,
-                            size: 30.sp,
+                            size: 25.sp,
                           ),
                         ),
                       ),
                       Transform.scale(
-                        scale: 0.8,
+                        scale: 0.7,
                         child: IconButton(
                           onPressed: () => Get.toNamed(Routes.SETTINGS,),
                           icon: Icon(
                             FluentIcons.settings_24_regular,
-                            size: 30.sp,
+                            size: 25.sp,
                           ),
                         ),
                       ),
@@ -97,7 +93,7 @@ class HomePage extends GetView<HomeController> {
                   child: Obx(
                     () => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15,),
-                      child: _controller.errorMessage!=null ? Center(child: Text(_controller.errorMessage, style: TextStyle(fontWeight: FontWeight.w600),)) : Column(
+                      child: _controller.homeErrorMessage!=null ? Center(child: Text(_controller.homeErrorMessage, style: TextStyle(fontWeight: FontWeight.w600),)) : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(
                           _controller.restaurantListModel.restaurants?.length ?? 0,

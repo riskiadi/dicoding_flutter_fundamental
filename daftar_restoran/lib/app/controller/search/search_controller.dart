@@ -29,6 +29,7 @@ class SearchController extends GetxController{
   }
 
   void searchQuery() async {
+    if(searchTextField.text.isEmpty) return;
     EasyLoading.show(status: "Loading");
     final result = await apiRepository.searchRestaurant(searchTextField.text);
     EasyLoading.dismiss();

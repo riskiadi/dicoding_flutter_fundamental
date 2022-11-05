@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daftar_restoran/app/controller/home/home_controller.dart';
-import 'package:daftar_restoran/app/data/model/detail_restaurant_model.dart';
 import 'package:daftar_restoran/app/utils/const.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +10,15 @@ class DetailPage extends GetView<HomeController> {
   DetailPage({Key? key}) : super(key: key);
 
   final _controller = Get.find<HomeController>();
-  final args = Get.arguments;
 
   @override
   Widget build(BuildContext context){
-    print(args["id"]);
     var restaurant = _controller.detailRestaurantModel?.restaurant;
     _controller.checkIsFavorite(restaurant?.id ?? "0");
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body: _controller.detailErrorMessage!=null ? widgetNoInternetConnection() : SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: Column(
           children: [
@@ -268,4 +265,40 @@ class DetailPage extends GetView<HomeController> {
       ),
     );
   }
+
+  Widget widgetNoInternetConnection(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 10.h),
+        Container(
+          margin: const EdgeInsets.only(left: 20, top: 40),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.14),
+                blurRadius: 5,
+                spreadRadius: 0.5,
+              )
+            ],
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 5,
+            vertical: 5,
+          ),
+          child: InkWell(
+            onTap: () => Get.back(),
+            child: const Icon(
+              FluentIcons.arrow_left_24_filled,
+            ),
+          ),
+        ),
+        SizedBox(height: 30.h),
+        Center(child: Text(TEXT_NO_CONNECTION),),
+      ],
+    );
+  }
+
 }

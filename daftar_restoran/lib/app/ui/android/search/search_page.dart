@@ -49,6 +49,7 @@ class SearchPage extends GetView<SearchController> {
                   ),
                   child: TextField(
                     controller: controller.searchTextField,
+                    onChanged: (value) => controller.searchQuery(),
                     style: TextStyle(fontSize: 14.sp),
                     decoration: InputDecoration(
                       filled: true,

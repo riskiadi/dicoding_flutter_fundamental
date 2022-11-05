@@ -78,10 +78,12 @@ class NotificationService{
 
   void configureSelectNotificationSubject(String route){
     selectNotificationSubject.stream.listen((String payload) async {
-      var restaurant = DetailRestaurantModel.fromJson(jsonDecode(payload));
+
+      var restaurant = Restaurant.fromJson(jsonDecode(payload));
       var homeController = Get.put(HomeController());
-      homeController.goToDetailBySearch(restaurant.restaurant?.id??"0");
-      Get.toNamed(Routes.DETAIL,arguments: {"id": restaurant.restaurant?.id});
+      homeController.goToDetailBySearch(restaurant.id??"0");
+      // Get.toNamed(Routes.DETAIL,arguments: {"id": restaurant.id});
     });
   }
+
 }
